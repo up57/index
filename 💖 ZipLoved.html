@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💖 ZipLoved · all files to ZIP</title>
+    <!-- Font Awesome (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fce4ec 0%, #f8bbd0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        .love-card {
+            background: rgba(255, 245, 247, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 3.5rem 3.5rem 3.5rem 3.5rem;
+            box-shadow: 0 30px 50px rgba(194, 60, 90, 0.25),
+                        0 10px 25px rgba(255, 80, 120, 0.15),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+            max-width: 900px;
+            width: 100%;
+            padding: 2.8rem 2.5rem;
+            transition: all 0.3s ease;
+            border: 2px solid #ffb6c9;
+        }
+
+        .love-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .love-header i {
+            font-size: 2.8rem;
+            color: #d6336c;
+            filter: drop-shadow(0 6px 12px rgba(214, 51, 108, 0.3));
+            transition: transform 0.2s;
+        }
+
+        .love-header i:hover {
+            transform: scale(1.08) rotate(-3deg);
+        }
+
+        .love-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #b82b5e, #e8436e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            text-shadow: 0 4px 18px rgba(232, 67, 110, 0.25);
+        }
+
+        .love-sub {
+            margin-left: auto;
+            background: #ffd9e4;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            color: #a13053;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.7);
+            border: 1px solid #ffb0c8;
+        }
+
+        .drop-zone {
+            background: rgba(255, 220, 232, 0.5);
+            border: 3px dashed #e5739b;
+            border-radius: 3rem;
+            padding: 2.2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-bottom: 2.2rem;
+            backdrop-filter: blur(4px);
+            box-shadow: inset 0 2px 8px rgba(255, 180, 200, 0.3);
+        }
+
+        .drop-zone:hover {
+            background: rgba(255, 200, 215, 0.7);
+            border-color: #c94f7a;
+            transform: scale(1.01);
+            box-shadow: 0 8px 25px rgba(200, 70, 110, 0.2);
+        }
+
+        .drop-zone i {
+            font-size: 3.5rem;
+            color: #bf3f6b;
+            margin-bottom: 0.6rem;
+            filter: drop-shadow(0 4px 8px rgba(180, 50, 80, 0.2));
+        }
+
+        .drop-zone p {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #802d4e;
+        }
+
+        .drop-zone span {
+            color: #b33b61;
+            font-weight: 600;
+            background: #ffe2ed;
+            padding: 0.15rem 0.9rem;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 0.2rem;
+        }
+
+        .file-list {
+            background: rgba(255, 235, 240, 0.6);
+            backdrop-filter: blur(4px);
+            border-radius: 2.5rem;
+            padding: 1.5rem 1.8rem;
+            margin: 1.8rem 0 2.2rem 0;
+            border: 1px solid #ffc1d4;
+            box-shadow: inset 0 1px 10px rgba(255, 200, 215, 0.4);
+            max-height: 210px;
+            overflow-y: auto;
+        }
+
+        .file-list::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .file-list::-webkit-scrollbar-track {
+            background: #ffdae6;
+            border-radius: 20px;
+        }
+
+        .file-list::-webkit-scrollbar-thumb {
+            background: #e06f94;
+            border-radius: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 0.9rem;
+            margin-bottom: 0.4rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 60px;
+            backdrop-filter: blur(2px);
+            border-left: 6px solid #e8436e;
+            box-shadow: 0 2px 6px rgba(200, 70, 110, 0.08);
+            transition: all 0.15s;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 230, 240, 0.85);
+            transform: translateX(5px);
+        }
+
+        .file-item .file-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: #581f36;
+            word-break: break-all;
+        }
+
+        .file-item .file-name i {
+            color: #c94f7a;
+            font-size: 1.2rem;
+            width: 1.8rem;
+        }
+
+        .file-item .file-size {
+            background: #ffe2ec;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #a13053;
+        }
+
+        .love-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0 0.8rem 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: white;
+            border: none;
+            padding: 0.9rem 2.4rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #581f36;
+            box-shadow: 0 8px 18px rgba(200, 70, 110, 0.15);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            flex: 1 0 auto;
+            justify-content: center;
+            background: #fff5f8;
+        }
+
+        .btn i {
+            font-size: 1.4rem;
+            color: #d6336c;
+        }
+
+        .btn-primary {
+            background: #d6336c;
+            color: white;
+            border: none;
+            box-shadow: 0 12px 28px rgba(214, 51, 108, 0.4);
+        }
+
+        .btn-primary i {
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #be2b5e;
+            transform: scale(1.02) translateY(-3px);
+            box-shadow: 0 18px 32px rgba(214, 51, 108, 0.45);
+        }
+
+        .btn-secondary {
+            background: #ffe2ec;
+            color: #6d2842;
+        }
+
+        .btn-secondary:hover {
+            background: #ffd0de;
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(200, 70, 110, 0.2);
+        }
+
+        .btn-danger {
+            background: #ffb0c0;
+            color: #691f38;
+        }
+
+        .btn-danger:hover {
+            background: #f598af;
+        }
+
+        .love-footer {
+            margin-top: 2.2rem;
+            display: flex;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #b34a6b;
+            border-top: 1px solid #ffb6cb;
+            padding-top: 1.8rem;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .love-footer i {
+            color: #d6336c;
+            font-size: 1.1rem;
+        }
+
+        .hidden-input {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .love-card {
+                padding: 2rem 1.2rem;
+                border-radius: 2.5rem;
+            }
+            .love-header h1 {
+                font-size: 1.8rem;
+            }
+            .btn {
+                padding: 0.7rem 1.4rem;
+                font-size: 1rem;
+                flex: 1 1 100%;
+            }
+            .drop-zone {
+                padding: 1.8rem 1rem;
+            }
+            .file-item {
+                flex-wrap: wrap;
+                gap: 0.3rem;
+            }
+        }
+
+        /* heart pulse */
+        .pulse-heart {
+            animation: pulse 1.8s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="love-card">
+    <!-- header -->
+    <div class="love-header">
+        <i class="fas fa-heart pulse-heart"></i>
+        <h1>ZipLoved</h1>
+        <span class="love-sub"><i class="fas fa-arrow-right"></i> all types</span>
+    </div>
+
+    <!-- drop zone -->
+    <div class="drop-zone" id="dropZone">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p><span>❤️ drop files · click to add</span></p>
+        <small style="color:#944560; display: block; margin-top: 6px;">
+            <i class="fas fa-code"></i> .apk · .html · .css · .js · images & more
+        </small>
+    </div>
+    <input type="file" id="fileInput" class="hidden-input" multiple />
+
+    <!-- file list -->
+    <div class="file-list" id="fileListContainer">
+        <div style="text-align: center; color: #a84a6b; padding: 0.8rem 0;">
+            <i class="fas fa-heart" style="margin-right: 6px;"></i> no files yet — show some love
+        </div>
+    </div>
+
+    <!-- actions -->
+    <div class="love-actions">
+        <button class="btn btn-secondary" id="clearBtn"><i class="fas fa-trash-alt"></i> clear all</button>
+        <button class="btn btn-primary" id="zipBtn"><i class="fas fa-file-archive"></i> 💕 ZIP & download</button>
+    </div>
+
+    <!-- footer -->
+    <div class="love-footer">
+        <i class="fas fa-heart" style="color: #e8436e;"></i>
+        <span>loved files · Create By Sandesh</span>
+        <i class="fas fa-heart" style="color: #e8436e;"></i>
+    </div>
+</div>
+
+<!-- JSZip library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+<script>
+    (function() {
+        "use strict";
+
+        // DOM elements
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileListContainer = document.getElementById('fileListContainer');
+        const clearBtn = document.getElementById('clearBtn');
+        const zipBtn = document.getElementById('zipBtn');
+
+        // Store files
+        let fileCollection = [];
+
+        // ---------- helpers ----------
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            const val = (bytes / Math.pow(k, i)).toFixed(1);
+            return val + ' ' + sizes[i];
+        }
+
+        // get icon for file type
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const iconMap = {
+                'apk': 'fab fa-android',
+                'html': 'fab fa-html5',
+                'css': 'fab fa-css3-alt',
+                'js': 'fab fa-js',
+                'json': 'fas fa-code',
+                'png': 'fas fa-image',
+                'jpg': 'fas fa-image',
+                'jpeg': 'fas fa-image',
+                'gif': 'fas fa-image',
+                'svg': 'fas fa-image',
+                'pdf': 'fas fa-file-pdf',
+                'txt': 'fas fa-file-alt',
+                'zip': 'fas fa-file-archive',
+                'rar': 'fas fa-file-archive',
+                'mp4': 'fas fa-video',
+                'mp3': 'fas fa-music',
+                'wav': 'fas fa-music',
+            };
+            return iconMap[ext] || 'fas fa-file';
+        }
+
+        // render file list
+        function renderFileList() {
+            if (fileCollection.length === 0) {
+                fileListContainer.innerHTML = `
+                    <div style="text-align: center; color: #a84a6b; padding: 0.8rem 0;">
+                        <i class="fas fa-heart" style="margin-right: 6px;"></i> no files yet — show some love
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            fileCollection.forEach((file, index) => {
+                const icon = getFileIcon(file.name);
+                const size = formatFileSize(file.size);
+                html += `
+                    <div class="file-item">
+                        <span class="file-name">
+                            <i class="${icon}"></i>
+                            <span>${file.name}</span>
+                        </span>
+                        <span class="file-size">${size}</span>
+                    </div>
+                `;
+            });
+            fileListContainer.innerHTML = html;
+        }
+
+        // add files to collection (avoid duplicates by name)
+        function addFiles(files) {
+            const existingNames = new Set(fileCollection.map(f => f.name));
+            let addedCount = 0;
+            for (const file of files) {
+                if (!existingNames.has(file.name)) {
+                    fileCollection.push(file);
+                    existingNames.add(file.name);
+                    addedCount++;
+                }
+            }
+            if (addedCount > 0) {
+                renderFileList();
+            } else {
+                // gentle feedback: file already exists
+                const toast = document.createElement('div');
+                toast.style.position = 'fixed';
+                toast.style.bottom = '20px';
+                toast.style.left = '50%';
+                toast.style.transform = 'translateX(-50%)';
+                toast.style.background = '#e8436e';
+                toast.style.color = 'white';
+                toast.style.padding = '0.8rem 2rem';
+                toast.style.borderRadius = '60px';
+                toast.style.fontWeight = '600';
+                toast.style.boxShadow = '0 12px 30px rgba(214,51,108,0.4)';
+                toast.style.zIndex = '999';
+                toast.innerHTML = '<i class="fas fa-heart" style="margin-right: 10px;"></i> already in list';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2200);
+            }
+        }
+
+        // ---------- event listeners ----------
+        // drop zone click
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // file input change
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                addFiles(e.target.files);
+            }
+            fileInput.value = ''; // reset so same file can be re-added
+        });
+
+        // drag and drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.background = 'rgba(255, 190, 210, 0.7)';
+            dropZone.style.borderColor = '#c94f7a';
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.background = 'rgba(255, 220, 232, 0.5)';
+            dropZone.style.borderColor = '#e5739b';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.background = 'rgba(255, 220, 232, 0.5)';
+            dropZone.style.borderColor = '#e5739b';
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                addFiles(files);
+            }
+        });
+
+        // clear all
+        clearBtn.addEventListener('click', () => {
+            if (fileCollection.length === 0) return;
+            fileCollection = [];
+            renderFileList();
+            // little heart feedback
+            const msg = document.createElement('div');
+            msg.style.position = 'fixed';
+            msg.style.top = '20px';
+            msg.style.left = '50%';
+            msg.style.transform = 'translateX(-50%)';
+            msg.style.background = '#ffb0c8';
+            msg.style.color = '#581f36';
+            msg.style.padding = '0.5rem 1.8rem';
+            msg.style.borderRadius = '60px';
+            msg.style.fontWeight = '600';
+            msg.style.boxShadow = '0 6px 20px rgba(200,70,110,0.2)';
+            msg.style.zIndex = '999';
+            msg.innerHTML = '<i class="fas fa-heart" style="margin-right: 8px;"></i> cleared with love';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 1600);
+        });
+
+        // ---------- ZIP & download ----------
+        zipBtn.addEventListener('click', () => {
+            if (fileCollection.length === 0) {
+                // alert with love
+                const warning = document.createElement('div');
+                warning.style.position = 'fixed';
+                warning.style.top = '30%';
+                warning.style.left = '50%';
+                warning.style.transform = 'translateX(-50%)';
+                warning.style.background = '#ffd0dc';
+                warning.style.color = '#802d4e';
+                warning.style.padding = '1rem 2.5rem';
+                warning.style.borderRadius = '60px';
+                warning.style.fontWeight = '600';
+                warning.style.boxShadow = '0 12px 30px rgba(214,51,108,0.2)';
+                warning.style.zIndex = '999';
+                warning.style.border = '2px solid #ffa5bb';
+                warning.innerHTML = '<i class="fas fa-heart-broken" style="margin-right: 12px;"></i> add some files first, darling';
+                document.body.appendChild(warning);
+                setTimeout(() => warning.remove(), 2300);
+                return;
+            }
+
+            // create zip
+            const zip = new JSZip();
+            let fileCount = 0;
+
+            // add all files to zip (using original names)
+            for (const file of fileCollection) {
+                // use file as blob
+                zip.file(file.name, file);
+                fileCount++;
+            }
+
+            // generate zip and download
+            zip.generateAsync({ type: 'blob' })
+                .then((blob) => {
+                    // use FileSaver to save
+                    saveAs(blob, 'loved-files.zip');
+                    // loving feedback
+                    const success = document.createElement('div');
+                    success.style.position = 'fixed';
+                    success.style.bottom = '25px';
+                    success.style.left = '50%';
+                    success.style.transform = 'translateX(-50%)';
+                    success.style.background = '#d6336c';
+                    success.style.color = 'white';
+                    success.style.padding = '0.9rem 2.5rem';
+                    success.style.borderRadius = '60px';
+                    success.style.fontWeight = '600';
+                    success.style.boxShadow = '0 14px 35px rgba(214,51,108,0.5)';
+                    success.style.zIndex = '999';
+                    success.innerHTML = `<i class="fas fa-heart" style="margin-right: 12px;"></i> ${fileCount} files zipped with love ❤️`;
+                    document.body.appendChild(success);
+                    setTimeout(() => success.remove(), 3000);
+                })
+                .catch((err) => {
+                    console.error(err);
+                    alert('Something went wrong while zipping. But we still love you ❤️');
+                });
+        });
+
+        // extra: allow dropping on whole window (optional)
+        document.addEventListener('dragover', (e) => e.preventDefault());
+        document.addEventListener('drop', (e) => e.preventDefault());
+
+        // minor initial render
+        renderFileList();
+
+        // tiny love note (console)
+        console.log('%c❤️ ZipLoved ❤️', 'font-size: 18px; color: #d6336c; font-weight: bold;');
+        console.log('%call files → zip with style', 'font-size: 14px; color: #a13053;');
+    })();
+</script>
+</body>
+</html>
